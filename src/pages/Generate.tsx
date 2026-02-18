@@ -1,10 +1,12 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
 import type { AspectRatio, IThumbnail, ThumbnailStyle } from "../assets/assets"
+import { colorSchemes, dummyThumbnails } from "../assets/assets"
 import SoftBackdrop from "../components/SoftBackdrop";
 import AspectRatioSelector from "../components/AspectRatioSelector";
 import StyleSelector from "../components/StyleSelector";
 import ColorSchemeSelector from "../components/ColorSchemeSelector";
+import PreviewPanel from "../components/PreviewPanel";
 
 
 const Generate = () => {
@@ -25,7 +27,31 @@ const Generate = () => {
   // Future feature: style dropdown
   const [_styleDropdownOpen, _setStyleDropdownOpen] = useState(false)
   
+  const handleGenerate = async () => {
+    // Future: API call to generate thumbnail
+  }
 
+  const fetchThumbnail = async () => {
+    if(id){
+      const thumbnail : any = dummyThumbnails.find((thumbnail) => thumbnail._id === id);
+      if(thumbnail){
+        _setThumbnail(thumbnail)
+        setAdditionalInfo(thumbnail.user_prompt)
+        setTitle(thumbnail.title)
+        _setColorSchemeId(thumbnail.color_scheme)
+        setAspectRatio(thumbnail.aspect_ratio)
+        _setStyle(thumbnail.style)
+        _setLoading(false)
+      }
+    }
+  }
+  
+  useEffect(() => {
+    if(id){
+      fetchThumbnail()
+    }
+  },[id])
+    
   return (
     <>
      <SoftBackdrop/>
@@ -33,7 +59,7 @@ const Generate = () => {
         <main className= "max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 pb-28 lg:pb-8">
           <div className= "grid lg:grid-cols-[400px_1fr] gap-8">
             {/*LEFT PANEL*/}
-            <div className={`space-y-6 ${id && 'pointer-events-none'}`}>
+            <div className="space-y-6">
               <div className="p-6 rounded-2xl bg-white/8 border border-white/12 shadow-xl space-y-6">
                 <div>
                   <h2 className="text-xl font-bold text-zinc-100 mb-1">Create Your Thumbnail</h2>
@@ -75,7 +101,7 @@ const Generate = () => {
                 </div>
                 {/*Button*/}
                 {!id &&(
-                  <button className="text-[15px] w-full py-3.5 rounded-xl font-medium bg-linear-to-b from-pink-500 to-pink-600 hover:from-pink-700 disabled:cursor-not-allowed transition-colours">
+                  <button onClick={handleGenerate} className="text-[15px] w-full py-3.5 rounded-xl font-medium bg-linear-to-b from-pink-500 to-pink-600 hover:from-pink-700 disabled:cursor-not-allowed transition-colours">
                     {loading ? 'Generating...' : 'Generate Thumbnail'}
                   </button>
                 )}
@@ -87,7 +113,10 @@ const Generate = () => {
 
             {/*RIGHT PANEL*/}
             <div>
-
+                  <div className="p-6 rounded-2xl bg-white/8 border border-white/10 shadow-xl">
+                    <h2 className="text-lg font-semibold text-zinc-100 mb-4">Preview</h2>
+                    <PreviewPanel thumbnail={_thumbnail} isLoading={loading} aspectRatio={aspectRatio}/>
+                  </div>
             </div>
           </div>
 
