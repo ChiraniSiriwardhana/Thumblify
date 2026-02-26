@@ -1,9 +1,14 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import SoftBackdrop from "./SoftBackdrop"
+import { useAuth } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 
 const Login = () => {
     const [state, setState] = useState("login")
+    const {user, login, signup} = useAuth();
+
+    const navigate = useNavigate();
 
     const [formData, setFormData] = useState({
         name: '',
@@ -19,7 +24,19 @@ const Login = () => {
     const handleSubmit = (e:React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         console.log(formData)
+        if(state === "login"){
+            login(formData)
+        }else{
+            signup(formData)
+        }
     }
+
+    useEffect(() => {
+        if(user){
+            navigate("/")
+        }
+    })
+    
   return (
     <>
     <SoftBackdrop />
