@@ -2,7 +2,7 @@ import {  type IThumbnail } from "../assets/assets"
 import SoftBackdrop from "../components/SoftBackdrop"
 import { useEffect, useState } from "react"
 import { ArrowUpRightIcon, Download as DownloadIcon, Trash2 as Trash2Icon } from "lucide-react"
-import { Link, useNavigate } from "react-router-dom"
+import { Link } from "react-router-dom"
 import { useAuth } from "../context/AuthContext"
 import api from "../configs/api"
 import toast from "react-hot-toast"
@@ -10,7 +10,6 @@ import toast from "react-hot-toast"
 const MyGeneration = () => {
 
   const {isLoggedIn} = useAuth();
-  const navigate = useNavigate();
 
   const aspectRatioClassMap: Record<string, string> = {
     '16:9': 'aspect-video',
