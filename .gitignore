@@ -13,13 +13,8 @@ dist-ssr
 *.local
 
 # Environment variables (sensitive data)
-.env
-.env.local
-.env.development
-.env.production
 
 # Editor directories and files
-.vscode/*
 !.vscode/extensions.json
 .idea
 .DS_Store
@@ -29,3 +24,5 @@ dist-ssr
 *.sln
 *.sw?
 config.bat
+temp_auto_push.bat
+temp_interactive_push.bat
